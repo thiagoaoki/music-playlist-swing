@@ -1,6 +1,7 @@
 package br.com.dbsti.aula.model;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +21,7 @@ public class Usuario implements Serializable {
         return id;
     }
     
-    @Column(length = 255)
+    @Column(nullable = false)
     private String nome;
     
     @Column(length = 20)
@@ -29,7 +30,7 @@ public class Usuario implements Serializable {
     @Column(length = 8)
     private String senha;
     
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Contato contato;
 
     public String getNome() {

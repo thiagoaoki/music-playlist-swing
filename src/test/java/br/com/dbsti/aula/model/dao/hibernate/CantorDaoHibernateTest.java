@@ -75,7 +75,7 @@ public class CantorDaoHibernateTest {
         Cantor cantor = dao.pesquisaPorId(id);
         Assert.assertNotNull(cantor);
         Assert.assertEquals(id, cantor.getId());        
-        Assert.assertEquals("Frank", cantor.getNome());        
-        Assert.assertEquals("Aguiar", cantor.getSobrenome());        
+        Assert.assertEquals("Zé", cantor.getNome());        
+        Assert.assertEquals("Ramalho", cantor.getSobrenome());        
     }
 }

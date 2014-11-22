@@ -1,6 +1,7 @@
 package br.com.dbsti.aula.model;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +16,12 @@ public class Musica implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    public Long getId() {
+        return id;
+    }
     
+    @Column(nullable = false)
     private String nome;
     private Integer duracao;   
     

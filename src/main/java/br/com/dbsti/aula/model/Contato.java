@@ -16,6 +16,10 @@ public class Contato implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    public Long getId() {
+        return id;
+    }
     
     @Column(length = 255)
     private String email;

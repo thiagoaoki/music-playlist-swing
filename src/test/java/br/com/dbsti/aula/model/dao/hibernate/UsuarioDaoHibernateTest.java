@@ -1,5 +1,6 @@
 package br.com.dbsti.aula.model.dao.hibernate;
 
+import br.com.dbsti.aula.model.Contato;
 import br.com.dbsti.aula.model.Usuario;
 import br.com.dbsti.aula.model.dao.UsuarioDAO;
 import java.util.List;
@@ -8,68 +9,121 @@ import org.junit.Test;
 
 public class UsuarioDaoHibernateTest {
 
-    private UsuarioDAO dao = new UsuarioDaoHibernate();
-
+     private UsuarioDAO dao = new UsuarioDaoHibernate();
+    
     @Test
-    public void deveAdicionarUsuarioNoBanco() {
-        Usuario usuario = new Usuario();
-        usuario.setLogin("rei.silva");
-        usuario.setNome("Reinaldo Da Silva");
-        usuario.setSenha("123mudar");
-
+    public void deveAdicionarNoBanco() {
+        Usuario usuario = usuario();
+        
         try {
             dao.adiciona(usuario);
+            
+            Assert.assertNotNull(usuario.getId());
+            Assert.assertNotNull(usuario.getContato().getId());
+            
         } catch (Exception e) {
-            Assert.fail("Deveria adionar um novo cantor");
+            e.printStackTrace();
+            Assert.fail("Deveria ter salvo o usuario");
         }
     }
-
-    @Test
-    public void deveAlterarUsuarioNoBanco() {
-        Usuario usuario = new Usuario();
-        usuario.setLogin("adriano.alioleo");
-        usuario.setNome("Adriano Alioleo Costa");
-        usuario.setSenha("adriano7814");
-
+ 
+    @Test(expected = Exception.class)
+    public void naoDeveAdicionarQuandoNomeForNulo() {
+        Usuario usuario = usuario();
+        usuario.setNome(null);
         dao.adiciona(usuario);
-
+    }
+    
+    @Test
+    public void deveAlterarNoBanco() {
+        Usuario usuario = usuario();
+        
+        dao.adiciona(usuario);
+        
         Assert.assertNotNull(usuario.getId());
         
-        usuario.setNome("Adriano Aliolheo da Costa");
+        usuario.setNome("João");
+        
         dao.atualiza(usuario);
         
-        Assert.assertEquals("Adriano Aliolheo da Costa", usuario.getNome());
+        Assert.assertEquals("João", usuario.getNome());
     }
     
     @Test
-    public void deveRemoverUsuarioNoBanco(){
-        Usuario usuario = new Usuario();
-        usuario.setLogin("everaldo.pinheiro");
-        usuario.setNome("Everaldo Pinheiro Schurle");
-        usuario.setSenha("Sc14shr");
-                
+    public void deveRemoverDoBanco() {
+        Usuario usuario = usuario();
+        
         dao.adiciona(usuario);
+        
         Assert.assertNotNull(usuario.getId());
         
-        Usuario usuarioDoBanco = dao.pesquisaPorId(usuario.getId());
         dao.remove(usuario.getId());
-        usuarioDoBanco = dao.pesquisaPorId(usuario.getId());
         
-        Assert.assertNull(usuarioDoBanco);        
+        Usuario doBanco = dao.pesquisaPorId(usuario.getId());
+        Assert.assertNull(doBanco);
     }
     
     @Test
-    public void deveListarUsuariosDoBanco(){
-        List<Usuario> lstListaUsuario = dao.lista();
-        
-        Assert.assertFalse(lstListaUsuario.isEmpty());
+    public void deveListarTodosDoBanco() {
+        List<Usuario> todos = dao.lista();
+        Assert.assertFalse(todos.isEmpty());
     }
     
     @Test
-    public void deveRetornarUmUsuarioComIdExistente(){
+    public void deveRetornarUmRegistroComIdExistente() {
         Long id = 1L;
         Usuario usuario = dao.pesquisaPorId(id);
         Assert.assertNotNull(usuario);
+        Assert.assertEquals(id, usuario.getId());
     }
-            
+    
+    @Test
+    public void deveAlterarContato() {
+        Usuario usuario = usuario();
+        
+        try {
+            dao.adiciona(usuario);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail("Deveria ter salvo o usuario: " + e.getMessage());
+        }
+        
+        usuario.getContato().setCelular("111");
+        
+        try {
+            dao.atualiza(usuario);
+        } catch (Exception e) {
+            Assert.fail("Deveria ter alterado contato");
+        }
+        
+        usuario = dao.pesquisaPorId(usuario.getId());
+        Assert.assertEquals("111", usuario.getContato().getCelular());
+    }
+    
+    @Test
+    public void deveInserirSemContato() {
+        Usuario usuario = usuario();
+        usuario.setContato(null);
+        
+        try {
+            dao.adiciona(usuario);
+        } catch (Exception e) {
+            Assert.fail("Deveria ter salvo o usuario");
+        }
+    }
+    
+    private Usuario usuario() {
+        Usuario usuario = new Usuario();
+        usuario.setNome("Zé");
+        usuario.setLogin("login");
+        usuario.setSenha("123");
+        
+        Contato contato = new Contato();
+        contato.setCelular("1234");
+        contato.setEmail("email");
+        
+        usuario.setContato(contato);
+        return usuario;
+    }
+    
 }
