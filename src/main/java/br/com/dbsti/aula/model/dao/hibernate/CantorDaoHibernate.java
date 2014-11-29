@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 public class CantorDaoHibernate extends GenericDaoHibernate<Cantor> implements CantorDAO{
-
     @Override
     public List<Cantor> pesquesaPorNome(String nome) {
         EntityManager em = JPAUtil.createEntityManager();
