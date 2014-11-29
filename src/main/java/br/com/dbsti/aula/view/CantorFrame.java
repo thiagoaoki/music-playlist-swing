@@ -7,22 +7,23 @@
 package br.com.dbsti.aula.view;
 
 import br.com.dbsti.aula.controller.CantorController;
+import java.awt.Frame;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.table.TableModel;
 
 /**
  *
  * @author DBS
  */
-public class CantorFrame extends javax.swing.JFrame {
+public class CantorFrame extends javax.swing.JDialog {
 
-    /**
-     * Creates new form CantorFrame
-     */
-    public CantorFrame() {
-        initComponents();
+    
+    public CantorFrame(Frame owner){
+       super(owner);
+       initComponents(); 
     }
 
     /**
@@ -35,10 +36,6 @@ public class CantorFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         botoesPnl = new javax.swing.JPanel();
-        opcoesPnl = new javax.swing.JPanel();
-        novoBtn = new javax.swing.JButton();
-        salvarBtn = new javax.swing.JButton();
-        excluirBtn = new javax.swing.JButton();
         camposPnl = new javax.swing.JPanel();
         fotoPnl = new javax.swing.JPanel();
         fotoLbl = new javax.swing.JLabel();
@@ -48,40 +45,27 @@ public class CantorFrame extends javax.swing.JFrame {
         sobrenomeTxt = new javax.swing.JTextField();
         carregarFotoBtn = new javax.swing.JButton();
         tabelaPnl = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        cantoresTbl = new javax.swing.JTable();
         filtrosPnl = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         nomeFiltroTxt = new javax.swing.JTextField();
         pesquisarBtn = new javax.swing.JButton();
+        opcoesPnl = new javax.swing.JPanel();
+        novoBtn = new javax.swing.JButton();
+        salvarBtn = new javax.swing.JButton();
+        excluirBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Cantor");
         setName("CantorFrame"); // NOI18N
         setPreferredSize(new java.awt.Dimension(400, 400));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         botoesPnl.setPreferredSize(new java.awt.Dimension(400, 400));
-
-        opcoesPnl.setBackground(new java.awt.Color(102, 102, 102));
-        opcoesPnl.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        novoBtn.setText("Novo");
-        novoBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                novoBtnActionPerformed(evt);
-            }
-        });
-        opcoesPnl.add(novoBtn);
-
-        salvarBtn.setText("Salvar");
-        salvarBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                salvarBtnActionPerformed(evt);
-            }
-        });
-        opcoesPnl.add(salvarBtn);
-
-        excluirBtn.setText("Excluir");
-        opcoesPnl.add(excluirBtn);
 
         camposPnl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -144,7 +128,7 @@ public class CantorFrame extends javax.swing.JFrame {
                         .addGroup(camposPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(sobreNomeLbl)
                             .addComponent(sobrenomeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                         .addComponent(carregarFotoBtn))
                     .addComponent(fotoPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -152,7 +136,7 @@ public class CantorFrame extends javax.swing.JFrame {
 
         tabelaPnl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        cantoresTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -163,13 +147,23 @@ public class CantorFrame extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tabelaPnl.setViewportView(jTable1);
+        cantoresTbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cantoresTblMouseClicked(evt);
+            }
+        });
+        tabelaPnl.setViewportView(cantoresTbl);
 
         filtrosPnl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel1.setText("Nome");
 
         pesquisarBtn.setText("Pesquisar");
+        pesquisarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pesquisarBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout filtrosPnlLayout = new javax.swing.GroupLayout(filtrosPnl);
         filtrosPnl.setLayout(filtrosPnlLayout);
@@ -199,38 +193,66 @@ public class CantorFrame extends javax.swing.JFrame {
         botoesPnl.setLayout(botoesPnlLayout);
         botoesPnlLayout.setHorizontalGroup(
             botoesPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(opcoesPnl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(filtrosPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(tabelaPnl, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
+            .addComponent(tabelaPnl, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE)
             .addComponent(camposPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         botoesPnlLayout.setVerticalGroup(
             botoesPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, botoesPnlLayout.createSequentialGroup()
-                .addComponent(filtrosPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(filtrosPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tabelaPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tabelaPnl, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(camposPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(opcoesPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(camposPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+
+        opcoesPnl.setBackground(new java.awt.Color(102, 102, 102));
+        opcoesPnl.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        novoBtn.setText("Novo");
+        novoBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                novoBtnActionPerformed(evt);
+            }
+        });
+        opcoesPnl.add(novoBtn);
+
+        salvarBtn.setText("Salvar");
+        salvarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salvarBtnActionPerformed(evt);
+            }
+        });
+        opcoesPnl.add(salvarBtn);
+
+        excluirBtn.setText("Excluir");
+        excluirBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                excluirBtnActionPerformed(evt);
+            }
+        });
+        opcoesPnl.add(excluirBtn);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(botoesPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(botoesPnl, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE)
+            .addComponent(opcoesPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(251, 251, 251)
-                .addComponent(botoesPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap(0, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(botoesPnl, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(opcoesPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        setSize(new java.awt.Dimension(808, 634));
+        opcoesPnl.getAccessibleContext().setAccessibleName("");
+
+        setSize(new java.awt.Dimension(546, 451));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -251,51 +273,32 @@ public class CantorFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_carregarFotoBtnActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CantorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CantorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CantorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CantorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        controller.preencheTabela();
+    }//GEN-LAST:event_formWindowOpened
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CantorFrame().setVisible(true);
-            }
-        });
-    }
+    private void cantoresTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cantoresTblMouseClicked
+        controller.preencheCampos(cantoresTbl.getSelectedRow());
+    }//GEN-LAST:event_cantoresTblMouseClicked
+
+    private void excluirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBtnActionPerformed
+        controller.exclui(cantoresTbl.getSelectedRow());
+    }//GEN-LAST:event_excluirBtnActionPerformed
+
+    private void pesquisarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesquisarBtnActionPerformed
+        controller.pesquisa();
+    }//GEN-LAST:event_pesquisarBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel botoesPnl;
     private javax.swing.JPanel camposPnl;
+    private javax.swing.JTable cantoresTbl;
     private javax.swing.JButton carregarFotoBtn;
     private javax.swing.JButton excluirBtn;
     private javax.swing.JPanel filtrosPnl;
     private javax.swing.JLabel fotoLbl;
     private javax.swing.JPanel fotoPnl;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField nomeFiltroTxt;
     private javax.swing.JTextField nomeTxt;
     private javax.swing.JLabel nomelbl;
@@ -324,9 +327,27 @@ public class CantorFrame extends javax.swing.JFrame {
     public void limpaCampos() {
         nomeTxt.setText(null);
         sobrenomeTxt.setText(null);
+        setFoto(null);
     }
 
     public void setFoto(ImageIcon icone) {
         fotoLbl.setIcon(icone);
+    }
+
+    public void atualizaTabelaDeCantores(TableModel tableModel) {
+        cantoresTbl.setModel(tableModel);
+        cantoresTbl.repaint();
+    }
+
+    public void setNome(String nome) {
+        nomeTxt.setText(nome);
+    }
+
+    public void setSobrenome(String sobrenome) {
+        sobrenomeTxt.setText(sobrenome);
+    }
+
+    public String getNomeFiltro() {
+        return nomeFiltroTxt.getText();
     }
 }
