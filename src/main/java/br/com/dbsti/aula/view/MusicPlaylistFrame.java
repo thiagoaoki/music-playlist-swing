@@ -32,6 +32,7 @@ public class MusicPlaylistFrame extends javax.swing.JFrame {
         menuArquivo = new javax.swing.JMenu();
         menuCadastro = new javax.swing.JMenu();
         menuItemCantor = new javax.swing.JMenuItem();
+        menuItemMusica = new javax.swing.JMenuItem();
         menuSistema = new javax.swing.JMenu();
         menuItemUsuario = new javax.swing.JMenuItem();
 
@@ -55,6 +56,14 @@ public class MusicPlaylistFrame extends javax.swing.JFrame {
             }
         });
         menuCadastro.add(menuItemCantor);
+
+        menuItemMusica.setText("Musica");
+        menuItemMusica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemMusicaActionPerformed(evt);
+            }
+        });
+        menuCadastro.add(menuItemMusica);
 
         barraDeMenu.add(menuCadastro);
 
@@ -98,6 +107,10 @@ public class MusicPlaylistFrame extends javax.swing.JFrame {
         new CantorFrame(this).setVisible(true);  
     }//GEN-LAST:event_menuItemCantorActionPerformed
 
+    private void menuItemMusicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemMusicaActionPerformed
+        new MusicaDialog(this).setVisible(true);
+    }//GEN-LAST:event_menuItemMusicaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -138,6 +151,7 @@ public class MusicPlaylistFrame extends javax.swing.JFrame {
     private javax.swing.JMenu menuArquivo;
     private javax.swing.JMenu menuCadastro;
     private javax.swing.JMenuItem menuItemCantor;
+    private javax.swing.JMenuItem menuItemMusica;
     private javax.swing.JMenuItem menuItemUsuario;
     private javax.swing.JMenu menuSistema;
     // End of variables declaration//GEN-END:variables

@@ -21,7 +21,6 @@ public class CantorController {
     public CantorController(CantorFrame view) {
         this.view = view;
         cantorDAO = new CantorDaoHibernate();
-
     }
 
     public void salvar() {
@@ -95,5 +94,5 @@ public class CantorController {
         }
         cantorTableModel = new CantorTableModel(cantores);
         view.atualizaTabelaDeCantores(cantorTableModel);
-    }
+    }       
 }

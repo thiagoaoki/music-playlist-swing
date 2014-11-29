@@ -62,4 +62,13 @@ public class Cantor implements Serializable{
     public void setFoto(byte[] foto) {
         this.foto = foto;
     }
+    
+    @Override
+    public String toString() {        
+        return getNomeCompleto(); 
+    }
+
+    private String getNomeCompleto() {
+        return getNome() + " " + getSobrenome();
+    }    
 }
