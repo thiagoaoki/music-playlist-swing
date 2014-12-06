@@ -4,6 +4,7 @@ import br.com.dbsti.aula.model.Cantor;
 import br.com.dbsti.aula.model.Musica;
 import br.com.dbsti.aula.model.dao.CantorDAO;
 import br.com.dbsti.aula.model.dao.MusicaDAO;
+import java.util.Calendar;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
@@ -82,7 +83,9 @@ public class MusicaDaoHibernateTest {
     private Musica musica() {
         Musica musica = new Musica();
         musica.setNome("Morango do Nordeste");
-        musica.setDuracao(60);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, 1);
+        musica.setDuracao(calendar.getTime());
         
         Cantor cantor = cantorDao.pesquisaPorId(1L);
         

@@ -8,7 +8,9 @@ package br.com.dbsti.aula.view;
 
 import br.com.dbsti.aula.controller.MusicaController;
 import br.com.dbsti.aula.model.Cantor;
+import br.com.dbsti.aula.view.table.MusicaTableModel;
 import java.awt.Frame;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
@@ -60,7 +62,7 @@ public class MusicaDialog extends javax.swing.JDialog {
         });
 
         botoesPnl.setBackground(new java.awt.Color(51, 51, 51));
-        botoesPnl.setLayout(new java.awt.GridLayout());
+        botoesPnl.setLayout(new java.awt.GridLayout(1, 0));
 
         novoBtn.setText("Novo");
         botoesPnl.add(novoBtn);
@@ -74,6 +76,11 @@ public class MusicaDialog extends javax.swing.JDialog {
         botoesPnl.add(salvarBtn);
 
         excluirBtn.setText("Excluir");
+        excluirBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                excluirBtnActionPerformed(evt);
+            }
+        });
         botoesPnl.add(excluirBtn);
 
         camposPnl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -114,12 +121,13 @@ public class MusicaDialog extends javax.swing.JDialog {
                     .addComponent(nomeLbl)
                     .addComponent(nomeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(camposPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cantorLbl)
-                    .addComponent(cantorCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(camposPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(camposPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(duracaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(duracaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(camposPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cantorLbl)
+                        .addComponent(cantorCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -136,6 +144,11 @@ public class MusicaDialog extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        musicaTbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                musicaTblMouseClicked(evt);
+            }
+        });
         tabelaPnl.setViewportView(musicaTbl);
 
         filtroPnl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -143,6 +156,11 @@ public class MusicaDialog extends javax.swing.JDialog {
         jLabel2.setText("Nome");
 
         perquisarBtn.setText("Pesquisar");
+        perquisarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                perquisarBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout filtroPnlLayout = new javax.swing.GroupLayout(filtroPnl);
         filtroPnl.setLayout(filtroPnlLayout);
@@ -194,11 +212,24 @@ public class MusicaDialog extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         controller.preencheCantores();
+        controller.preencheMusicas();
     }//GEN-LAST:event_formWindowOpened
 
     private void salvarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarBtnActionPerformed
         controller.salvar();
     }//GEN-LAST:event_salvarBtnActionPerformed
+
+    private void musicaTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_musicaTblMouseClicked
+        controller.carregaMusica(musicaTbl.getSelectedRow());
+    }//GEN-LAST:event_musicaTblMouseClicked
+
+    private void excluirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBtnActionPerformed
+        controller.excluir(musicaTbl.getSelectedRow());
+    }//GEN-LAST:event_excluirBtnActionPerformed
+
+    private void perquisarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_perquisarBtnActionPerformed
+        controller.perquisar();
+    }//GEN-LAST:event_perquisarBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -235,5 +266,32 @@ public class MusicaDialog extends javax.swing.JDialog {
 
     public void mostraMensagem(String msn) {
         JOptionPane.showMessageDialog(this, msn);
+    }
+
+    public Date getDuracao() {
+        Object duracaoObj = duracaoTxt.getValue();
+        Date duracaoDate = (Date) duracaoObj;        
+        return duracaoDate;
+    }
+
+    public void atualizaTabelaDeMusicas(MusicaTableModel musicaTableModel) {
+        musicaTbl.setModel(musicaTableModel);
+        musicaTbl.repaint();
+    }
+
+    public void setNomeDaMusica(String nome) {
+        nomeTxt.setText(nome);
+    }
+
+    public void setCantor(Cantor cantor) {
+        cantorCb.setSelectedItem(cantor);
+    }
+
+    public void setDuracao(Date duracaoDate) {
+        duracaoTxt.setValue(duracaoDate);
+    }
+
+    public String getNomeFiltro() {
+        return nomeFiltroTxt.getText();
     }
 }
