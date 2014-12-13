@@ -32,6 +32,13 @@ public class Musica implements Serializable{
     @JoinColumn(name = "cantor_id")
     private Cantor cantor;    
 
+    public Integer getDuracao(){
+        if (duracao == null) {
+          return 0;
+        }
+        return duracao;
+    }
+    
     public String getNome() {
         return nome;
     }

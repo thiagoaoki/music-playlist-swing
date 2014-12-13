@@ -2,6 +2,7 @@ package br.com.dbsti.aula.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -36,7 +37,7 @@ public class Playlist implements Serializable{
     
     @Temporal(TemporalType.DATE)
     private Date dataCriacao;
-    private Integer duracaoTotal;
+    private Integer duracaoTotal = 0;
     
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "playlist_musica")
@@ -44,7 +45,31 @@ public class Playlist implements Serializable{
 
     public void adicionaMusica(Musica musica){
         musicas.add(musica);
+        duracaoTotal += musica.getDuracao();
     }
+    
+    public void removeMusica(Musica musica) {
+        musicas.remove(musica);
+        duracaoTotal -= musica.getDuracao();
+    }    
+    
+    public Date getDuracaoTotalDate(){
+        if (duracaoTotal == null) {
+            return null;
+        } 
+        
+        int segundos = duracaoTotal %60;
+        int horasEmMinutos = duracaoTotal / 60;       
+        int minutos = horasEmMinutos %60;
+        int horas = horasEmMinutos /60;
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR, horas);
+        calendar.set(Calendar.MINUTE, minutos);        
+        calendar.set(Calendar.SECOND, segundos);
+        
+        return calendar.getTime();
+    }      
     
     public List<Musica> getMusicas() {
         return musicas;
@@ -73,5 +98,4 @@ public class Playlist implements Serializable{
     public Integer getDuracaoTotal() {
         return duracaoTotal;
     }
-
 }
