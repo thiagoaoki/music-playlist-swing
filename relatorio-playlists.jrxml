@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorio-playlists" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c324fff7-801d-446b-83a7-1154af02d24a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="NOME_PLAYLIST" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     PLAYLIST."DURACAOTOTAL" AS PLAYLIST_DURACAOTOTAL,
+     MUSICA."DURACAO" AS MUSICA_DURACAO,
+     MUSICA."NOME" AS MUSICA_NOME,
+     PLAYLIST."NOME" AS PLAYLIST_NOME
+FROM
+     "PLAY"."PLAYLIST" PLAYLIST INNER JOIN "PLAY"."PLAYLIST_MUSICA" PLAYLIST_MUSICA ON PLAYLIST."ID" = PLAYLIST_MUSICA."PLAYLIST_ID"
+     INNER JOIN "PLAY"."MUSICA" MUSICA ON PLAYLIST_MUSICA."MUSICAS_ID" = MUSICA."ID"
+WHERE UPPER(PLAYLIST.NOME) LIKE UPPER($P{NOME_PLAYLIST}|| '%') ]]>
+	</queryString>
+	<field name="PLAYLIST_DURACAOTOTAL" class="java.lang.Integer"/>
+	<field name="MUSICA_DURACAO" class="java.lang.Integer"/>
+	<field name="MUSICA_NOME" class="java.lang.String"/>
+	<field name="PLAYLIST_NOME" class="java.lang.String"/>
+	<variable name="DATEHORA" class="java.util.Date">
+		<variableExpression><![CDATA[new Date()]]></variableExpression>
+	</variable>
+	<group name="PLAYLIST_NOME">
+		<groupExpression><![CDATA[$F{PLAYLIST_NOME}]]></groupExpression>
+		<groupHeader>
+			<band height="41">
+				<textField>
+					<reportElement x="0" y="0" width="414" height="20" uuid="45fb2535-a15a-40d5-800f-8082f634608d"/>
+					<textFieldExpression><![CDATA[$F{PLAYLIST_NOME}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="414" y="0" width="138" height="20" uuid="7c6a2b2f-6290-46b9-942d-f5eee4628603"/>
+					<textFieldExpression><![CDATA[String.format("%02d:%02d",
+      ($F{PLAYLIST_DURACAOTOTAL} / 60),
+      ($F{PLAYLIST_DURACAOTOTAL} % 60) )]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="176" y="20" width="138" height="20" uuid="9fedbcca-06cd-47ae-a69d-6154cd2d8760"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Duração da Musica]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="38" y="20" width="138" height="20" uuid="db6c7d9a-65a4-4601-9231-50f6fde233bd"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nome da Musica]]></text>
+				</staticText>
+				<line>
+					<reportElement x="365" y="37" width="100" height="1" uuid="b9fabff5-a73b-4f07-a441-52eec292a643"/>
+				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="73" splitType="Stretch">
+			<rectangle radius="0">
+				<reportElement x="0" y="0" width="555" height="73" backcolor="#CCFFFF" uuid="08e0d783-27ad-4ed8-8d6c-08322b1b073f"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Double"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="-1" width="555" height="74" uuid="c13f521f-8f0d-4c40-a879-718569b5644a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="36"/>
+				</textElement>
+				<text><![CDATA[Relatório de PlayLists]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="8" width="51" height="20" uuid="93c8bbfb-b40d-4559-8717-ac4a0282cff3"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Pagina:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="51" y="8" width="166" height="20" uuid="4162106a-de2f-47b8-8f39-b6be8176158c"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="1" width="555" height="1" uuid="8e706cdf-1840-474d-9ede-1259b18cdf87"/>
+			</line>
+			<line>
+				<reportElement x="0" y="34" width="552" height="1" uuid="2b1151d1-a690-42f3-94f8-9fa3b6da8913"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="b9b5f225-4b3f-4abc-a363-73620b47dbd3"/>
+				<text><![CDATA[Nome da PlayList]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="414" y="0" width="100" height="20" uuid="0531da69-6f61-4ca9-a974-63962531102b"/>
+				<text><![CDATA[Duração]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="38" y="0" width="138" height="20" uuid="fc4db777-3dc1-4b16-81c3-f0f55c67780e"/>
+				<textFieldExpression><![CDATA[$F{MUSICA_NOME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="176" y="0" width="138" height="20" uuid="c3a8adca-8a79-4e0c-a455-89e8ca28b2ff"/>
+				<textFieldExpression><![CDATA[$F{MUSICA_DURACAO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

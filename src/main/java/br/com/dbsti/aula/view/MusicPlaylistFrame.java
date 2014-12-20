@@ -36,6 +36,8 @@ public class MusicPlaylistFrame extends javax.swing.JFrame {
         menuItemPlaylist = new javax.swing.JMenuItem();
         menuSistema = new javax.swing.JMenu();
         menuItemUsuario = new javax.swing.JMenuItem();
+        menuRelatorio = new javax.swing.JMenu();
+        miRelatorioDePlayList = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Playlist - DBSTI 2014");
@@ -88,6 +90,23 @@ public class MusicPlaylistFrame extends javax.swing.JFrame {
 
         barraDeMenu.add(menuSistema);
 
+        menuRelatorio.setText("Relatório");
+        menuRelatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuRelatorioActionPerformed(evt);
+            }
+        });
+
+        miRelatorioDePlayList.setText("Relatorio de PlayLists");
+        miRelatorioDePlayList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miRelatorioDePlayListActionPerformed(evt);
+            }
+        });
+        menuRelatorio.add(miRelatorioDePlayList);
+
+        barraDeMenu.add(menuRelatorio);
+
         setJMenuBar(barraDeMenu);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -123,6 +142,14 @@ public class MusicPlaylistFrame extends javax.swing.JFrame {
     private void menuItemPlaylistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPlaylistActionPerformed
         new PlayListDialog(this, false).setVisible(true);
     }//GEN-LAST:event_menuItemPlaylistActionPerformed
+
+    private void menuRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRelatorioActionPerformed
+        
+    }//GEN-LAST:event_menuRelatorioActionPerformed
+
+    private void miRelatorioDePlayListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miRelatorioDePlayListActionPerformed
+        new RelatorioDialog(this,false).setVisible(true);
+    }//GEN-LAST:event_miRelatorioDePlayListActionPerformed
 
     /**
      * @param args the command line arguments
@@ -167,6 +194,8 @@ public class MusicPlaylistFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemMusica;
     private javax.swing.JMenuItem menuItemPlaylist;
     private javax.swing.JMenuItem menuItemUsuario;
+    private javax.swing.JMenu menuRelatorio;
     private javax.swing.JMenu menuSistema;
+    private javax.swing.JMenuItem miRelatorioDePlayList;
     // End of variables declaration//GEN-END:variables
 }
